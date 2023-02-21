@@ -1,3 +1,5 @@
+use std::collections::VecDeque;
+
 use vector::Vector;
 fn main() {
     println!("Hello, world!");
@@ -38,8 +40,22 @@ impl Pendulum {
         }
     }
 
-    fn update(){
+    fn update(&mut self){
+        // Pendunlum equation for angular acceleration
+        self.angular_acceleration = -1.0*self.g*self.angle.sin() /self.r;
 
+        // The angular velocity depends of the angular accelaration
+        self.angular_velocity += self.angular_acceleration;
+
+        // The angle is the angle plus the angular velocity 
+        self.angle += self.angular_velocity;
+
+        // The position is the polar coordinates translated to cartesian coordiantes
+        self.position.set(self.r*self.angle.sin(), self.r*self.angle.cos());
+
+        // The final position of the ball in the canvas
+        // Pendulum plus the position vector.
+        self.position.add(&self.origin);
     }
 
     fn draw() {
@@ -62,7 +78,7 @@ mod vector { // isolate sequencitial code
             }
         }
 
-        pub fn add(&mut self, other: Vector) -> &Vector{ // Method function -> self
+        pub fn add(&mut self, other: &Vector) -> &Vector{ // Method function -> self
             self.x += other.x;
             self.y += other.y;
             self 
