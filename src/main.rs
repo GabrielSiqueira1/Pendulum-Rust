@@ -1,8 +1,14 @@
+use vector::Vector;
 fn main() {
     println!("Hello, world!");
 }
 
 struct Pendulum{
+
+    origin: vector::Vector, // This vector is the position of the pendulum
+
+    position: vector::Vector, // This vector is the position of the balls
+
     angle: f32, // Pendulum Angle
 
     angular_velocity: f32,
@@ -14,8 +20,22 @@ struct Pendulum{
 }
 
 impl Pendulum {
-    fn new(){
+    fn new(x:f32, y:f32, r:f32) -> Pendulum{
+        Pendulum { 
+            // Setting origin of the pendulum
+            origin: Vector::new(x, y), 
 
+            // We'll set the position when we update the pendulum
+            // The initial value is 0.0
+            position: Vector::new(0.0, 0.0), 
+            angle: 1.0,                             // In radians
+            angular_velocity: 0.0,                  // Dont have initial moviment
+            angular_acceleration: 0.0,              // Dont have initial acceleration
+            
+            r: r, 
+            m: 1.0, 
+            g: 1.5, 
+        }
     }
 
     fn update(){
@@ -29,25 +49,28 @@ impl Pendulum {
 
 mod vector { // isolate sequencitial code
 
-    struct Vector{
+    pub struct Vector{
         pub x: f32,
         pub y: f32,
     }
 
     impl Vector {
-        pub fn new(x: f32, y: f32) -> Vector{
+        pub fn new(x: f32, y: f32) -> Vector{ // Associated function
             Vector { 
                 x, 
                 y,
             }
         }
 
-        pub fn add(){
-
+        pub fn add(&mut self, other: Vector) -> &Vector{ // Method function -> self
+            self.x += other.x;
+            self.y += other.y;
+            self 
         }
 
-        pub fn set(){
-
+        pub fn set(&mut self, x: f32, y: f32){
+            self.x = x;
+            self.y = y;
         }
     }
 }
