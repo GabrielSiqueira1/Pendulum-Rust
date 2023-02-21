@@ -68,9 +68,10 @@ mod vector { // isolate sequencitial code
             self 
         }
 
-        pub fn set(&mut self, x: f32, y: f32){
+        pub fn set(&mut self, x: f32, y: f32) -> &Vector{
             self.x = x;
             self.y = y;
+            self
         }
     }
 }
