@@ -1,8 +1,36 @@
-use std::collections::VecDeque;
+use speedy2d::color::Color;
+use speedy2d::window::{WindowHandler, WindowHelper};
+use speedy2d::{Graphics2D, Window};
 
 use vector::Vector;
 fn main() {
-    println!("Hello, world!");
+    // We need this window object to create a window
+    let window = Window::new_centered("Title", (640, 480)).unwrap();
+    
+    let win: MyWindowHandler = MyWindowHandler {
+        p: Pendulum::new(400.0, 0.0, 200.0)
+    };
+
+    window.run_loop(win);
+}
+
+struct MyWindowHandler {
+    p: Pendulum,
+}
+
+impl WindowHandler for MyWindowHandler
+{
+    fn on_draw(&mut self, helper: &mut WindowHelper, graphics: &mut Graphics2D)
+    {
+        graphics.clear_screen(Color::from_rgb(0.8, 0.9, 1.0));
+
+        self.p.update();
+        self.p.draw(graphics);
+
+        helper.request_redraw();
+    }
+
+   // If desired, on_mouse_move(), on_key_down(), etc...
 }
 
 struct Pendulum{
@@ -58,8 +86,15 @@ impl Pendulum {
         self.position.add(&self.origin);
     }
 
-    fn draw() {
+    fn draw(&self, graphics: &mut Graphics2D) {
+        graphics.draw_line(
+            (self.origin.x, self.origin.y),
+            (self.position.x, self.position.y),
+            3.0,
+            Color::RED,
+        );
 
+        graphics.draw_circle((self.position.x, self.position.y), 30.0, Color::RED);
     }
 }
 
